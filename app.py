@@ -1,12 +1,23 @@
-from flask import Flask, render_template, request, redirect, url_for
+import os
+from functools import wraps
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from datetime import date
 from database import db, add_leave, view_leaves
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///leave_db.db"
 
 db.init_app(app)
+
+def login_required(view):
+    @wraps(view)
+    def wrapped_view(*args, **kwargs):
+        if "user_id" not in session:
+            return redirect(url_for("login"))
+        return view(*args, **kwargs)
+    return wrapped_view
 
 @app.route("/")
 def home():
