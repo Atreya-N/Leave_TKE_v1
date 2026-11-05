@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Leave History | LeaveFlow</title>
+    <title>Dashboard | LeaveFlow</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='leave_history_style.css') }}">
 </head>
@@ -20,38 +20,45 @@
             <span>LeaveFlow</span>
         </div>
 
-        <span class="history-navbar-label">
-            Employee Portal
-        </span>
+        <div class="dashboard-user">
+            <span class="dashboard-user-name">
+                {{ session.get("username", "Employee") }}
+            </span>
+            <span class="history-navbar-label">
+                Employee Portal
+            </span>
+        </div>
 
     </header>
+
 
     <!-- MAIN CONTENT -->
     <main class="history-page">
 
-        <div class="history-heading">
+        <!-- WELCOME SECTION -->
+        <section class="dashboard-welcome">
 
-            <a href="{{ url_for('home') }}" class="history-back">
-                ← Back to Dashboard
-            </a>
+            <div>
+                <h1>
+                    Welcome, {{ session.get("username", "Employee") }}!
+                </h1>
 
-            <h1>Leave History</h1>
+                <p>
+                    Manage your leave applications and track their status.
+                </p>
+            </div>
 
-            <p>
-                Track your submitted leave applications
-                and their approval status.
-            </p>
+        </section>
 
-        </div>
 
-        <!-- HISTORY CARD -->
+        <!-- LEAVE APPLICATIONS -->
         <section class="history-card">
 
             <div class="history-card-header">
 
                 <div>
                     <h2>My Leave Applications</h2>
-                    <p>All your submitted leave requests</p>
+                    <p>View and track all your submitted leave requests.</p>
                 </div>
 
                 <a href="{{ url_for('apply_leave') }}" class="history-apply-btn">
@@ -60,7 +67,8 @@
 
             </div>
 
-            <!-- HISTORY TABLE -->
+
+            <!-- LEAVE HISTORY TABLE -->
             <div class="history-table-wrapper">
 
                 <table class="history-table">
@@ -129,6 +137,7 @@
         </section>
 
     </main>
+
 
     <!-- FOOTER -->
     <footer class="history-footer">

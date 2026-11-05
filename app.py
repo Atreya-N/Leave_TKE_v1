@@ -2,10 +2,14 @@ import os
 from functools import wraps
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from datetime import date
-from database import db, add_leave, view_leaves
+from database import db, add_leave, view_leaves, User
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
+
+app.config["SECRET_KEY"] = os.environ.get(
+    "SECRETY_KEY", "dev-only"
+)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///leave_db.db"
 
@@ -19,11 +23,33 @@ def login_required(view):
         return view(*args, **kwargs)
     return wrapped_view
 
-@app.route("/")
-def home():
-    return render_template("employee.html")
+@app.route("/", methods = ["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        user = User.query.filter_by(username = username).first()
+
+        if user and check_password_hash(user.password_hash, password):
+            session["user_id"] = user.id
+            session["username"] = user.username
+            return redirect(url_for("dashboard"))
+        else:
+            return "Invalid username or password"
+
+    return render_template("login.html")
+
+
+@app.route("/history")
+@login_required
+def dashboard():
+    employee_id = session["username"]
+    leaves = view_leaves(employee_id)
+    return render_template("leave_history.html", leaves = leaves)
 
 @app.route("/apply", methods = ["GET", "POST"])
+@login_required
 def apply_leave():
     if request.method == "POST":
         employee_id = request.form.get("employee_id")
@@ -56,16 +82,9 @@ def apply_leave():
             end_date,
             reason
         )
-        return redirect(url_for("home"))
+        return redirect(url_for("dashboard"))
 
     return render_template("apply_leave.html")
-
-@app.route("/history")
-def leave_history():
-    employee_id = 1950
-    leaves = view_leaves(employee_id)
-    return render_template("leave_history.html", leaves = leaves)
-
 
 
 with app.app_context():
