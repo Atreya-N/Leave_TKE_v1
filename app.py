@@ -52,7 +52,7 @@ def dashboard():
 @login_required
 def apply_leave():
     if request.method == "POST":
-        employee_id = request.form.get("employee_id")
+        employee_id = int(session["username"])
         leave_type = request.form.get("leave_type")
         start_date = request.form.get("start_date")
         end_date = request.form.get("end_date")
