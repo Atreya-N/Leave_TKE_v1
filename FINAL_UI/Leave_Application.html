@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>届書</title>
+
+  <link rel="stylesheet" href="Leave_Application_Style.css" />
+
+</head>
+
+<body>
+
+  <div class="toolbar">
+
+    <button type="button" onclick="window.print()">印刷 / Print</button>
+
+    <button type="button" onclick="clearForm()">入力をクリア / Clear</button>
+
+  </div>
+
+  <main class="sheet">
+
+    <h1>届　書</h1>
+
+    <table aria-label="届書フォーム">
+
+      <colgroup>
+        <col class="mark">
+        <col class="category">
+        <col class="vertical">
+        <col class="datearea">
+        <col class="right">
+      </colgroup>
+
+      <tr>
+
+        <td class="mark"><input type="radio" name="kind" aria-label="有給休暇"></td>
+        <td class="category">有給休暇</td>
+
+        <td class="vertical" rowspan="3">期<br><br>日</td>
+
+        <td class="datearea" rowspan="3">
+
+          <div class="date-row"><label> <input type="text" placeholder="　" aria-label="開始年">年</label><label><input
+                type="text" placeholder="　" aria-label="開始月">月</label><label><input type="text" placeholder="　"
+                aria-label="開始日">日から</label></div>
+
+          <div class="date-row"><label><input type="text" aria-label="終了年">年</label><label><input type="text"
+                aria-label="終了月">月</label><label><input type="text" aria-label="終了日">日まで</label></div>
+
+        </td>
+        <td class="right" rowspan="3" style="vertical-align:bottom"> <input type="text" aria-label="日数"
+            style="width:35px;text-align:center"> 日間</td>
+
+      </tr>
+
+      <tr>
+        <td class="mark"><input type="radio" name="kind" aria-label="特別休暇"></td>
+        <td class="category">特別休暇</td>
+      </tr>
+
+      <tr>
+        <td class="mark"><input type="radio" name="kind" aria-label="代休"></td>
+        <td class="category">代　休</td>
+      </tr>
+
+      <tr>
+
+        <td class="mark"><input type="radio" name="kind" aria-label="欠勤"></td>
+        <td class="category">欠　勤</td>
+
+        <td class="vertical" rowspan="2">時<br><br>間</td>
+
+        <td colspan="2" class="time-cell">
+          <div class="time-line"><span class="ampm">午前・後</span><input type="text" aria-label="開始時刻 時"
+              maxlength="2">時<input type="text" aria-label="開始時刻 分" maxlength="2">分から</div>
+        </td>
+
+      </tr>
+
+      <tr>
+        <td class="mark"></td>
+        <td class="category"></td>
+        <td colspan="2" class="time-cell">
+          <div class="time-line"><span class="ampm">午前・後</span><input type="text" aria-label="終了時刻 時"
+              maxlength="2">時<input type="text" aria-label="終了時刻 分" maxlength="2">分まで</div>
+        </td>
+        <td colspan="3" style="text-align:center;vertical-align:bottom"> <input type="text" aria-label="時間数"
+            style="width:30px;text-align:center"> 時間<br><input type="text" aria-label="分数"
+            style="width:30px;text-align:center"> 分</td>
+        <td colspan="4" style="text-align:center;vertical-align:bottom"> <input type="text" aria-label="時間数"
+            style="width:30px;text-align:center"> 時間<br><input type="text" aria-label="分数"
+            style="width:30px;text-align:center"> 分</td>
+      </tr>
+
+      <tr>
+        <td class="mark"><input type="radio" name="kind" aria-label="遅刻"></td>
+        <td class="category">遅　刻</td>
+        <td colspan="2" rowspan="7" style="padding:0;vertical-align:top">
+          <div class="reason-label">事由 / 行先</div><textarea class="reason" aria-label="事由・行先"></textarea>
+        </td>
+
+      </tr>
+
+      <tr>
+        <td class="mark"><input type="radio" name="kind" aria-label="早退"></td>
+        <td class="category">早　退</td>
+      </tr>
+
+      <tr>
+        <td class="mark"><input type="radio" name="kind" aria-label="早出"></td>
+        <td class="category">早　出</td>
+        <td class="right"></td>
+      </tr>
+
+      <tr>
+        <td class="mark"><input type="radio" name="kind" aria-label="残業"></td>
+        <td class="category">残　業</td>
+        <td class="right"></td>
+      </tr>
+
+      <tr>
+        <td class="mark"><input type="radio" name="kind" aria-label="休日出勤"></td>
+        <td class="category">休日出勤</td>
+        <td class="right"></td>
+      </tr>
+
+      <tr>
+        <td class="mark"><input type="radio" name="kind" aria-label="外出"></td>
+        <td class="category">外　出</td>
+        <td class="right"></td>
+      </tr>
+
+      <tr>
+        <td class="mark"><input type="radio" name="kind" aria-label="出張"></td>
+        <td class="category">出　張</td>
+        <td class="right" style="height:42px">
+          <div class="processing">処理<input type="text" aria-label="処理欄"></div>
+        </td>
+      </tr>
+
+    </table>
+
+    <p class="note">該当する欄に○印をつけること</p>
+
+    <div class="submission">提出日 <input type="text" aria-label="提出年" placeholder="年">年 <input type="text"
+        aria-label="提出月" placeholder="月">月 <input type="text" aria-label="提出日" placeholder="日">日</div>
+
+    <div class="employee">
+
+      <div class="seal-label">殿</div>
+
+      <div class="number">社員No. <input type="text" aria-label="社員番号"></div>
+
+    </div>
+
+    <div class="signature">
+
+      <label>所属 <input type="text" aria-label="所属"></label>
+
+      <label>氏名 <input type="text" aria-label="氏名"></label>
+
+      <div class="stamp">印</div>
+
+    </div>
+
+    <div class="approval">
+
+      <div>
+        <div class="approval-title">人事印</div>
+        <div class="stamp-box">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="approval-title">所属長印</div>
+        <div class="stamp-box">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="small-print">コクヨ　フォーム No.190</div>
+
+  </main>
+
+  <script>
+
+    function clearForm() {
+
+      if (!confirm('入力内容をすべてクリアしますか？')) return;
+
+      document.querySelectorAll('input').forEach(el => {
+
+        if (el.type === 'radio' || el.type === 'checkbox') el.checked = false;
+
+        else el.value = '';
+
+      });
+
+      document.querySelectorAll('textarea').forEach(el => el.value = '');
+
+    }
+
+  </script>
+
+</body>
+
+</html>
