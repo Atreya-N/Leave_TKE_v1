@@ -7,26 +7,23 @@
 
     <title>Apply for Leave | LeaveFlow</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='apply_leave_style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='apply_leave_style.css') }}">
 </head>
 
 <body class="apply-body">
 
-    <!-- Navigation Bar -->
-    <nav class="apply-navbar">
+    <header class="apply-navbar">
 
         <div class="apply-navbar-logo">
-            <div class="apply-navbar-icon">
-                LF
-            </div>
-
-            <span class="apply-navbar-label">
-                LeaveFlow
-            </span>
+            <span class="apply-navbar-icon">L</span>
+            <span>LeaveFlow</span>
         </div>
 
-    </nav>
+        <span class="apply-navbar-label">
+            Employee Portal
+        </span>
+
+    </header>
 
 
     <!-- Main Page -->
@@ -37,14 +34,8 @@
 
             <a href="{{ url_for('dashboard') }}" class="apply-back">
 
-                <svg viewBox="0 0 24 24"
-                     width="16"
-                     height="16"
-                     fill="none"
-                     stroke="currentColor"
-                     stroke-width="2"
-                     stroke-linecap="round"
-                     stroke-linejoin="round">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
 
                     <path d="M19 12H5"></path>
                     <path d="M12 19l-7-7 7-7"></path>
@@ -79,9 +70,7 @@
 
 
             <!-- Leave Application Form -->
-            <form action="{{ url_for('apply_leave') }}"
-                  method="POST"
-                  class="apply-form">
+            <form action="{{ url_for('apply_leave') }}" method="POST" class="apply-form">
 
 
                 <!-- Leave Type -->
@@ -91,9 +80,7 @@
                         Leave Type
                     </label>
 
-                    <select id="leave_type"
-                            name="leave_type"
-                            required>
+                    <select id="leave_type" name="leave_type" required>
 
                         <option value="" disabled selected>
                             Select leave type
@@ -129,10 +116,7 @@
                             Start Date
                         </label>
 
-                        <input type="date"
-                               id="start_date"
-                               name="start_date"
-                               required>
+                        <input type="date" id="start_date" name="start_date" required>
 
                     </div>
 
@@ -143,10 +127,7 @@
                             End Date
                         </label>
 
-                        <input type="date"
-                               id="end_date"
-                               name="end_date"
-                               required>
+                        <input type="date" id="end_date" name="end_date" required>
 
                     </div>
 
@@ -160,11 +141,8 @@
                         Reason for Leave
                     </label>
 
-                    <textarea id="reason"
-                              name="reason"
-                              rows="5"
-                              placeholder="Please enter the reason for your leave..."
-                              required></textarea>
+                    <textarea id="reason" name="reason" rows="5" placeholder="Please enter the reason for your leave..."
+                        required></textarea>
 
                 </div>
 
@@ -172,13 +150,11 @@
                 <!-- Form Actions -->
                 <div class="apply-actions">
 
-                    <a href="{{ url_for('dashboard') }}"
-                       class="apply-cancel-btn">
+                    <a href="{{ url_for('dashboard') }}" class="apply-cancel-btn">
                         Cancel
                     </a>
 
-                    <button type="submit"
-                            class="apply-submit-btn">
+                    <button type="submit" class="apply-submit-btn">
                         Submit Application
                     </button>
 
