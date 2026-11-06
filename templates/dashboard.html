@@ -7,16 +7,16 @@
 
     <title>Dashboard | LeaveFlow</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='leave_history_style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='leave_dashboard_style.css') }}">
 </head>
 
-<body class="history-body">
+<body class="dashboard-body">
 
     <!-- NAVIGATION BAR -->
-    <header class="history-navbar">
+    <header class="dashboard-navbar">
 
-        <div class="history-navbar-logo">
-            <span class="history-navbar-icon">L</span>
+        <div class="dashboard-navbar-logo">
+            <span class="dashboard-navbar-icon">L</span>
             <span>LeaveFlow</span>
         </div>
 
@@ -24,7 +24,7 @@
             <span class="dashboard-user-name">
                 {{ session.get("username", "Employee") }}
             </span>
-            <span class="history-navbar-label">
+            <span class="dashboard-navbar-label">
                 Employee Portal
             </span>
         </div>
@@ -33,7 +33,7 @@
 
 
     <!-- MAIN CONTENT -->
-    <main class="history-page">
+    <main class="dashboard-page">
 
         <!-- WELCOME SECTION -->
         <section class="dashboard-welcome">
@@ -52,26 +52,26 @@
 
 
         <!-- LEAVE APPLICATIONS -->
-        <section class="history-card">
+        <section class="dashboard-card">
 
-            <div class="history-card-header">
+            <div class="dashboard-card-header">
 
                 <div>
                     <h2>My Leave Applications</h2>
                     <p>View and track all your submitted leave requests.</p>
                 </div>
 
-                <a href="{{ url_for('apply_leave') }}" class="history-apply-btn">
+                <a href="{{ url_for('apply_leave') }}" class="dashboard-apply-btn">
                     + Apply for Leave
                 </a>
 
             </div>
 
 
-            <!-- LEAVE HISTORY TABLE -->
-            <div class="history-table-wrapper">
+            <!-- LEAVE dashboard TABLE -->
+            <div class="dashboard-table-wrapper">
 
-                <table class="history-table">
+                <table class="dashboard-table">
 
                     <thead>
                         <tr>
@@ -111,7 +111,7 @@
                             </td>
 
                             <td>
-                                <span class="history-status status-{{ leave.status|lower }}">
+                                <span class="dashboard-status status-{{ leave.status|lower }}">
                                     {{ leave.status }}
                                 </span>
                             </td>
@@ -119,9 +119,10 @@
                         </tr>
 
                         {% else %}
+            reason
 
                         <tr>
-                            <td colspan="6" class="history-empty">
+                            <td colspan="6" class="dashboard-empty">
                                 No leave applications found.
                             </td>
                         </tr>
@@ -140,7 +141,7 @@
 
 
     <!-- FOOTER -->
-    <footer class="history-footer">
+    <footer class="dashboard-footer">
         <p>
             © 2026 LeaveFlow · Employee Leave Management System
         </p>

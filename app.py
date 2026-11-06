@@ -41,12 +41,12 @@ def login():
     return render_template("login.html")
 
 
-@app.route("/history")
+@app.route("/dashboard")
 @login_required
 def dashboard():
     employee_id = session["username"]
     leaves = view_leaves(employee_id)
-    return render_template("leave_history.html", leaves = leaves)
+    return render_template("dashboard.html", leaves = leaves)
 
 @app.route("/apply", methods = ["GET", "POST"])
 @login_required
