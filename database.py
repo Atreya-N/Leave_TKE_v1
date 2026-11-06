@@ -37,6 +37,20 @@ def view_leaves(employee_id):
 
     return leaves
 
+def get_leave_by_id(leave_id):
+    leave = db.session.get(LeaveRequest, leave_id)
+
+    return leave
+
+def update_leave(leave, leave_type, start_date, end_date, reason):
+
+    leave.leave_type = leave_type
+    leave.start_date = start_date
+    leave.end_date = end_date
+    leave.reason = reason
+
+    db.session.commit()
+
 class User(db.Model):
     __tablename__  = "Users"
 

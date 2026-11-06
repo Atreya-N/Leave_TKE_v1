@@ -2,7 +2,7 @@ import os
 from functools import wraps
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from datetime import date
-from database import db, add_leave, view_leaves, User
+from database import db, add_leave, view_leaves, get_leave_by_id, update_leave, User
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
@@ -86,7 +86,49 @@ def apply_leave():
 
     return render_template("apply_leave.html")
 
+@app.route("/edit/<int:leave_id>", methods=["GET", "POST"])
+@login_required
+def edit_leave(leave_id):
 
+    leave = get_leave_by_id(leave_id)
+
+    if leave is None or leave.employee_id != int(session["username"]):
+        return "Leave application not found!", 404
+
+    if request.method == "POST":
+
+        leave_type = request.form.get("leave_type")
+        start_date_str = request.form.get("start_date")
+        end_date_str = request.form.get("end_date")
+        reason = request.form.get("reason")
+        try:
+            start_date = date.fromisoformat(start_date_str)
+            end_date = date.fromisoformat(end_date_str)
+
+        except (TypeError, ValueError):
+            return "Invalid date format!", 400
+
+        if not all([leave_type, start_date_str, end_date_str, reason]):
+            return "All fields are required!", 400
+
+        if end_date < start_date:
+            return "End date cannot be before start date!", 400
+        
+        update_leave(
+            leave,
+            leave_type,
+            start_date,
+            end_date,
+            reason
+        )
+
+        return redirect(url_for("dashboard"))
+    return render_template("edit_leave.html", leave=leave)
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
 with app.app_context():
     db.create_all()
 

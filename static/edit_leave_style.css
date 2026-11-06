@@ -1,0 +1,395 @@
+
+/* ==========================================
+   EDIT LEAVE PAGE
+========================================== */
+
+/* PAGE RESET AND LAYOUT */
+
+.edit-body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #f4f7fb;
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+}
+
+.edit-body *,
+.edit-body *::before,
+.edit-body *::after {
+    box-sizing: border-box;
+}
+
+
+/* ==========================================
+   NAVIGATION BAR
+========================================== */
+
+.edit-navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+    min-height: 72px;
+    flex-shrink: 0;
+
+    padding: 0 40px;
+    margin: 0;
+
+    background-color: #142b49;
+    color: #ffffff;
+
+    position: relative;
+    z-index: 10;
+}
+
+.edit-navbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.edit-navbar-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 36px;
+    height: 36px;
+
+    background-color: #ffffff;
+    color: #142b49;
+
+    border-radius: 9px;
+    font-size: 19px;
+    font-weight: 800;
+}
+
+.edit-navbar-label {
+    color: #cbd5e1;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+
+/* ==========================================
+   MAIN CONTENT
+========================================== */
+
+.edit-page {
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 50px 24px 80px;
+    flex: 1;
+}
+
+
+/* PAGE HEADING */
+
+.edit-heading {
+    margin-bottom: 32px;
+}
+
+.edit-back {
+    display: inline-block;
+    margin-bottom: 22px;
+
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.edit-back:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+.edit-heading h1 {
+    margin: 0 0 10px;
+    font-size: 34px;
+    font-weight: 800;
+    color: #142b49;
+}
+
+.edit-heading p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #64748b;
+}
+
+
+/* ==========================================
+   FORM CARD
+========================================== */
+
+.edit-card {
+    width: 100%;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(20, 43, 73, 0.05);
+}
+
+.edit-card-header {
+    padding: 28px 32px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.edit-card-header h2 {
+    margin: 0 0 6px;
+    color: #142b49;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.edit-card-header p {
+    margin: 0;
+    color: #64748b;
+    font-size: 13px;
+}
+
+
+/* ==========================================
+   FORM FIELDS
+========================================== */
+
+.edit-form {
+    padding: 32px;
+}
+
+.edit-field {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-bottom: 24px;
+}
+
+.edit-field label {
+    color: #334155;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.edit-field input,
+.edit-field select,
+.edit-field textarea {
+    width: 100%;
+    padding: 13px 15px;
+
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+
+    background-color: #ffffff;
+    color: #334155;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    outline: none;
+
+    transition: border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.edit-field input::placeholder,
+.edit-field textarea::placeholder {
+    color: #94a3b8;
+}
+
+.edit-field input:focus,
+.edit-field select:focus,
+.edit-field textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.edit-field textarea {
+    resize: vertical;
+    min-height: 120px;
+    line-height: 1.6;
+}
+
+
+/* DATE FIELDS SIDE BY SIDE */
+
+.edit-date-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+
+/* ==========================================
+   FORM BUTTONS
+========================================== */
+
+.edit-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 14px;
+
+    margin-top: 8px;
+    padding-top: 24px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.edit-cancel-btn,
+.edit-save-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 44px;
+    padding: 12px 22px;
+
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition: background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+/* CANCEL BUTTON */
+
+.edit-cancel-btn {
+    background-color: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+}
+
+.edit-cancel-btn:hover {
+    background-color: #e2e8f0;
+    color: #334155;
+}
+
+
+/* SAVE CHANGES BUTTON */
+
+.edit-save-btn {
+    background-color: #142b49;
+    color: #ffffff;
+    border: 1px solid #142b49;
+}
+
+.edit-save-btn:hover {
+    background-color: #23476f;
+    transform: translateY(-2px);
+}
+
+
+/* ==========================================
+   FOOTER
+========================================== */
+
+.edit-footer {
+    width: 100%;
+    padding: 22px 20px;
+    background-color: #ffffff;
+    border-top: 1px solid #e2e8f0;
+    text-align: center;
+}
+
+.edit-footer p {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+
+/* ==========================================
+   RESPONSIVE DESIGN
+========================================== */
+
+@media (max-width: 768px) {
+
+    .edit-navbar {
+        min-height: 64px;
+        padding: 0 20px;
+    }
+
+    .edit-navbar-logo {
+        font-size: 18px;
+    }
+
+    .edit-navbar-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 17px;
+    }
+
+    .edit-navbar-label {
+        font-size: 11px;
+    }
+
+    .edit-page {
+        padding: 35px 16px 60px;
+    }
+
+    .edit-heading h1 {
+        font-size: 28px;
+    }
+
+    .edit-card-header {
+        padding: 22px;
+    }
+
+    .edit-form {
+        padding: 22px;
+    }
+
+    .edit-date-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .edit-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .edit-cancel-btn,
+    .edit-save-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 400px) {
+
+    .edit-navbar {
+        padding: 0 14px;
+    }
+
+    .edit-navbar-logo {
+        gap: 8px;
+        font-size: 16px;
+    }
+
+    .edit-navbar-label {
+        font-size: 10px;
+    }
+
+    .edit-heading h1 {
+        font-size: 25px;
+    }
+}

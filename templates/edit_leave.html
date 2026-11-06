@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Leave | LeaveFlow</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='edit_leave_style.css') }}">
+</head>
+
+<body class="edit-body">
+
+    <!-- NAVIGATION BAR -->
+    <header class="edit-navbar">
+
+        <div class="edit-navbar-logo">
+            <span class="edit-navbar-icon">L</span>
+            <span>LeaveFlow</span>
+        </div>
+
+        <span class="edit-navbar-label">
+            Employee Portal
+        </span>
+
+    </header>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="edit-page">
+
+        <div class="edit-heading">
+
+            <a href="{{ url_for('dashboard') }}" class="edit-back">
+                ← Back to Dashboard
+            </a>
+
+            <h1>Edit Leave Application</h1>
+
+            <p>
+                Update the information in your existing leave application.
+            </p>
+
+        </div>
+
+
+        <!-- FORM CARD -->
+        <section class="edit-card">
+
+            <div class="edit-card-header">
+                <h2>Edit Application #{{ leave.id }}</h2>
+                <p>Modify the required information below.</p>
+            </div>
+
+
+            <form action="{{ url_for('edit_leave', leave_id=leave.id) }}"
+                  method="POST"
+                  class="edit-form">
+
+
+                <!-- LEAVE TYPE -->
+                <div class="edit-field">
+
+                    <label for="leave_type">
+                        Leave Type
+                    </label>
+
+                    <select id="leave_type" name="leave_type" required>
+
+                        <option value="" disabled>
+                            Select leave type
+                        </option>
+
+                        <option value="Paid Leave"
+                            {% if leave.leave_type == "Paid Leave" %}selected{% endif %}>
+                            Paid Leave
+                        </option>
+
+                        <option value="Sick Leave"
+                            {% if leave.leave_type == "Sick Leave" %}selected{% endif %}>
+                            Sick Leave
+                        </option>
+
+                        <option value="Casual Leave"
+                            {% if leave.leave_type == "Casual Leave" %}selected{% endif %}>
+                            Casual Leave
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- DATE FIELDS -->
+                <div class="edit-date-row">
+
+                    <div class="edit-field">
+
+                        <label for="start_date">
+                            Start Date
+                        </label>
+
+                        <input type="date"
+                               id="start_date"
+                               name="start_date"
+                               value="{{ leave.start_date.strftime('%Y-%m-%d') }}"
+                               required>
+
+                    </div>
+
+
+                    <div class="edit-field">
+
+                        <label for="end_date">
+                            End Date
+                        </label>
+
+                        <input type="date"
+                               id="end_date"
+                               name="end_date"
+                               value="{{ leave.end_date.strftime('%Y-%m-%d') }}"
+                               required>
+
+                    </div>
+
+                </div>
+
+
+                <!-- REASON -->
+                <div class="edit-field">
+
+                    <label for="reason">
+                        Reason for Leave
+                    </label>
+
+                    <textarea id="reason"
+                              name="reason"
+                              rows="5"
+                              placeholder="Briefly explain your reason for requesting leave..."
+                              required>{{ leave.reason }}</textarea>
+
+                </div>
+
+
+                <!-- BUTTONS -->
+                <div class="edit-actions">
+
+                    <a href="{{ url_for('dashboard') }}"
+                       class="edit-cancel-btn">
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="edit-save-btn">
+                        Save Changes
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="edit-footer">
+
+        <p>
+            © 2026 LeaveFlow · Employee Leave Management System
+        </p>
+
+    </footer>
+
+</body>
+
+</html>
