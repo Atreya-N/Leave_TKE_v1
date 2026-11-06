@@ -7,82 +7,120 @@
 
     <title>Apply for Leave | LeaveFlow</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='apply_leave_style.css') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='apply_leave_style.css') }}">
 </head>
 
 <body class="apply-body">
 
-    <!-- NAVIGATION BAR -->
-    <header class="apply-navbar">
+    <!-- Navigation Bar -->
+    <nav class="apply-navbar">
 
         <div class="apply-navbar-logo">
-            <span class="apply-navbar-icon">L</span>
-            <span>LeaveFlow</span>
+            <div class="apply-navbar-icon">
+                LF
+            </div>
+
+            <span class="apply-navbar-label">
+                LeaveFlow
+            </span>
         </div>
 
-        <span class="apply-navbar-label">
-            Employee Portal
-        </span>
+    </nav>
 
-    </header>
 
-    <!-- MAIN CONTENT -->
+    <!-- Main Page -->
     <main class="apply-page">
 
+        <!-- Page Heading -->
         <div class="apply-heading">
 
             <a href="{{ url_for('dashboard') }}" class="apply-back">
-                ← Back to Dashboard
+
+                <svg viewBox="0 0 24 24"
+                     width="16"
+                     height="16"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <path d="M19 12H5"></path>
+                    <path d="M12 19l-7-7 7-7"></path>
+
+                </svg>
+
+                <span>Dashboard</span>
+
             </a>
 
             <h1>Apply for Leave</h1>
 
             <p>
-                Submit a new leave application by completing
-                the form below.
+                Fill in the details below to submit your leave application.
             </p>
 
         </div>
 
-        <!-- FORM CARD -->
+
+        <!-- Application Card -->
         <section class="apply-card">
 
             <div class="apply-card-header">
-                <h2>Leave Application Form</h2>
-                <p>Please provide the required information.</p>
+
+                <h2>New Leave Application</h2>
+
+                <p>
+                    Please provide the required information below.
+                </p>
+
             </div>
 
-            <form action="{{ url_for('apply_leave') }}" method="POST" class="apply-form">
+
+            <!-- Leave Application Form -->
+            <form action="{{ url_for('apply_leave') }}"
+                  method="POST"
+                  class="apply-form">
 
 
-                <!-- LEAVE TYPE -->
+                <!-- Leave Type -->
                 <div class="apply-field">
 
                     <label for="leave_type">
                         Leave Type
                     </label>
 
-                    <select id="leave_type" name="leave_type" required>
-                        <option value="" disabled selecte reason d>
+                    <select id="leave_type"
+                            name="leave_type"
+                            required>
+
+                        <option value="" disabled selected>
                             Select leave type
                         </option>
 
-                        <option value="Paid Leave">
-                            Paid Leave
+                        <option value="Annual Leave">
+                            Annual Leave
                         </option>
 
                         <option value="Sick Leave">
                             Sick Leave
                         </option>
 
-                        <option value="Casual Leave">
-                            Casual Leave
+                        <option value="Personal Leave">
+                            Personal Leave
                         </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
                     </select>
 
                 </div>
 
-                <!-- DATE FIELDS -->
+
+                <!-- Date Fields -->
                 <div class="apply-date-row">
 
                     <div class="apply-field">
@@ -91,43 +129,56 @@
                             Start Date
                         </label>
 
-                        <input type="date" id="start_date" name="start_date" required>
+                        <input type="date"
+                               id="start_date"
+                               name="start_date"
+                               required>
 
                     </div>
 
-                    <div class="apply-field">
 
+                    <div class="apply-field">
 
                         <label for="end_date">
                             End Date
                         </label>
 
-                        <input type="date" id="end_date" name="end_date" required>
+                        <input type="date"
+                               id="end_date"
+                               name="end_date"
+                               required>
 
                     </div>
 
                 </div>
 
-                <!-- REASON -->
+
+                <!-- Reason -->
                 <div class="apply-field">
 
                     <label for="reason">
                         Reason for Leave
                     </label>
 
-                    <textarea id="reason" name="reason" rows="5"
-                        placeholder="Briefly explain your reason for requesting leave..." required></textarea>
+                    <textarea id="reason"
+                              name="reason"
+                              rows="5"
+                              placeholder="Please enter the reason for your leave..."
+                              required></textarea>
 
                 </div>
 
-                <!-- BUTTONS -->
+
+                <!-- Form Actions -->
                 <div class="apply-actions">
 
-                    <a href="{{ url_for('dashboard') }}" class="apply-cancel-btn">
+                    <a href="{{ url_for('dashboard') }}"
+                       class="apply-cancel-btn">
                         Cancel
                     </a>
 
-                    <button type="submit" class="apply-submit-btn">
+                    <button type="submit"
+                            class="apply-submit-btn">
                         Submit Application
                     </button>
 
@@ -139,11 +190,10 @@
 
     </main>
 
-    <!-- FOOTER -->
+
+    <!-- Footer -->
     <footer class="apply-footer">
-        <p>
-            © 2026 LeaveFlow · Employee Leave Management System
-        </p>
+        <p>LeaveFlow &copy; 2026</p>
     </footer>
 
 </body>
