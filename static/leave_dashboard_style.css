@@ -90,6 +90,7 @@
 
 .navbar-title {
     position: absolute;
+
     left: 50%;
     transform: translateX(-50%);
 
@@ -454,6 +455,32 @@
 
 
 /* ==========================================
+   MANAGER REMARKS
+========================================== */
+
+.dashboard-table .remarks-cell {
+    min-width: 180px;
+    max-width: 250px;
+
+    color: #334155;
+    font-size: 13px;
+    line-height: 1.6;
+
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+
+/* WHEN NO REMARKS ARE AVAILABLE */
+
+.no-remarks {
+    color: #94a3b8;
+    font-style: italic;
+    font-size: 12px;
+}
+
+
+/* ==========================================
    STATUS BADGES
 ========================================== */
 
@@ -574,7 +601,7 @@
     }
 
     .dashboard-table {
-        min-width: 800px;
+        min-width: 1050px;
     }
 
 }
@@ -616,12 +643,17 @@
 }
 
 
-/* EDIT ACTION BUTTON */
+/* ==========================================
+   EDIT ACTION BUTTON
+========================================== */
 
 .action-cell {
     text-align: center;
     vertical-align: middle;
+
+    white-space: nowrap;
 }
+
 
 .edit-btn {
     display: inline-flex;
@@ -640,8 +672,126 @@
     transition: all 0.2s ease;
 }
 
+
 .edit-btn:hover {
     background-color: #3478c8;
     color: #ffffff;
+
     transform: scale(1.08);
+}
+
+/* ==========================================
+   DELETE ACTION BUTTON
+========================================== */
+
+.delete-form {
+    display: inline-flex;
+    margin: 0;
+}
+
+.delete-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 34px;
+    height: 34px;
+
+    border: none;
+    border-radius: 6px;
+
+    color: #dc3545;
+    background-color: #fcebed;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.delete-btn:hover {
+    background-color: #dc3545;
+    color: #ffffff;
+
+    transform: scale(1.08);
+}
+
+/* No action available */
+.action-unavailable {
+    color: #94a3b8;
+    font-size: 16px;
+}
+
+/* ==========================================
+   TABLE ALIGNMENT FIX
+========================================== */
+
+/* Keep the table columns evenly distributed */
+.dashboard-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+/* Align all headings and data */
+.dashboard-table th,
+.dashboard-table td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 16px 10px;
+}
+
+/* Set consistent column widths */
+.dashboard-table th:nth-child(1),
+.dashboard-table td:nth-child(1) {
+    width: 10%;
+}
+
+.dashboard-table th:nth-child(2),
+.dashboard-table td:nth-child(2) {
+    width: 13%;
+}
+
+.dashboard-table th:nth-child(3),
+.dashboard-table td:nth-child(3),
+.dashboard-table th:nth-child(4),
+.dashboard-table td:nth-child(4) {
+    width: 11%;
+}
+
+.dashboard-table th:nth-child(5),
+.dashboard-table td:nth-child(5) {
+    width: 16%;
+}
+
+.dashboard-table th:nth-child(6),
+.dashboard-table td:nth-child(6) {
+    width: 10%;
+}
+
+.dashboard-table th:nth-child(7),
+.dashboard-table td:nth-child(7) {
+    width: 19%;
+}
+
+.dashboard-table th:nth-child(8),
+.dashboard-table td:nth-child(8) {
+    width: 10%;
+}
+
+/* Center edit and delete buttons */
+.dashboard-table .action-cell {
+    text-align: center;
+    white-space: nowrap;
+}
+
+.dashboard-table .action-cell .edit-btn,
+.dashboard-table .action-cell .delete-form {
+    vertical-align: middle;
+}
+
+/* Keep long text readable */
+.dashboard-table .reason-cell,
+.dashboard-table .remarks-cell {
+    overflow-wrap: anywhere;
+    line-height: 1.5;
 }

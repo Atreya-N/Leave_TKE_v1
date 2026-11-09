@@ -12,7 +12,7 @@ class LeaveRequest(db.Model):
     end_date = db.Column(db.Date, nullable = False)
     reason = db.Column(db.Text, nullable = False)
     status = db.Column(db.String(20), nullable = False, default = "Pending")
-
+    manager_remarks = db.Column(db.Text, nullable = True)
 
 def add_leave(employee_id, leave_type, start_date, end_date, reason):
     new_leave = LeaveRequest(
@@ -49,6 +49,10 @@ def update_leave(leave, leave_type, start_date, end_date, reason):
     leave.end_date = end_date
     leave.reason = reason
 
+    db.session.commit()
+
+def delete_leave(leave):
+    db.session.delete(leave)
     db.session.commit()
 
 class User(db.Model):

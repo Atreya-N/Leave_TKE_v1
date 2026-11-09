@@ -2,7 +2,7 @@ import os
 from functools import wraps
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from datetime import date
-from database import db, add_leave, view_leaves, get_leave_by_id, update_leave, User
+from database import db, add_leave, view_leaves, get_leave_by_id, update_leave, delete_leave, User
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
@@ -95,6 +95,10 @@ def edit_leave(leave_id):
     if leave is None or leave.employee_id != int(session["username"]):
         return "Leave application not found!", 404
 
+    if leave.status != "Pending":
+        return "Only pending leave applications can be deleted!", 403
+
+
     if request.method == "POST":
 
         leave_type = request.form.get("leave_type")
@@ -124,6 +128,22 @@ def edit_leave(leave_id):
 
         return redirect(url_for("dashboard"))
     return render_template("edit_leave.html", leave=leave)
+
+@app.route("/delete/<int:leave_id>", methods = ["POST"])
+@login_required
+def delete_leave_record(leave_id):
+    
+    leave = get_leave_by_id(leave_id)
+    
+    if leave is None or leave.employee_id != int(session["username"]):
+        return "Leave application not found", 404
+    
+    if leave.status != "Pending":
+        return "Only pending leave applications can be deleted!", 403
+
+    delete_leave(leave)
+
+    return redirect(url_for("dashboard"))
 
 @app.route("/logout")
 def logout():
