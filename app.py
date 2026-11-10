@@ -34,7 +34,12 @@ def login():
         if user and check_password_hash(user.password_hash, password):
             session["user_id"] = user.id
             session["username"] = user.username
-            return redirect(url_for("dashboard"))
+            session["role"] = user.role
+
+            if user.role == "manager":
+                return redirect(url_for("manager_dashboard"))
+            else:
+                return redirect(url_for("dashboard"))
         else:
             return "Invalid username or password"
 
