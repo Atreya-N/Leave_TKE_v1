@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,6 +13,7 @@
 
 <body class="apply-body">
 
+    <!-- NAVIGATION BAR -->
     <header class="apply-navbar">
 
         <div class="apply-navbar-logo">
@@ -19,23 +21,38 @@
             <span>LeaveFlow</span>
         </div>
 
+        <!-- DYNAMIC PORTAL LABEL -->
         <span class="apply-navbar-label">
-            Employee Portal
+
+            {% if session.get("role") == "manager" %}
+                Manager Portal
+            {% else %}
+                Employee Portal
+            {% endif %}
+
         </span>
 
     </header>
 
 
-    <!-- Main Page -->
+    <!-- MAIN PAGE -->
     <main class="apply-page">
 
-        <!-- Page Heading -->
+        <!-- PAGE HEADING -->
         <div class="apply-heading">
 
-            <a href="{{ url_for('dashboard') }}" class="apply-back">
+            <!-- DYNAMIC BACK TO DASHBOARD LINK -->
+            <a href="{{ url_for('manager_dashboard') if session.get('role') == 'manager' else url_for('dashboard') }}"
+               class="apply-back">
 
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
+                <svg viewBox="0 0 24 24"
+                     width="16"
+                     height="16"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
 
                     <path d="M19 12H5"></path>
                     <path d="M12 19l-7-7 7-7"></path>
@@ -55,7 +72,7 @@
         </div>
 
 
-        <!-- Application Card -->
+        <!-- APPLICATION CARD -->
         <section class="apply-card">
 
             <div class="apply-card-header">
@@ -69,18 +86,22 @@
             </div>
 
 
-            <!-- Leave Application Form -->
-            <form action="{{ url_for('apply_leave') }}" method="POST" class="apply-form">
+            <!-- LEAVE APPLICATION FORM -->
+            <form action="{{ url_for('apply_leave') }}"
+                  method="POST"
+                  class="apply-form">
 
 
-                <!-- Leave Type -->
+                <!-- LEAVE TYPE -->
                 <div class="apply-field">
 
                     <label for="leave_type">
                         Leave Type
                     </label>
 
-                    <select id="leave_type" name="leave_type" required>
+                    <select id="leave_type"
+                            name="leave_type"
+                            required>
 
                         <option value="" disabled selected>
                             Select leave type
@@ -107,7 +128,7 @@
                 </div>
 
 
-                <!-- Date Fields -->
+                <!-- DATE FIELDS -->
                 <div class="apply-date-row">
 
                     <div class="apply-field">
@@ -116,7 +137,10 @@
                             Start Date
                         </label>
 
-                        <input type="date" id="start_date" name="start_date" required>
+                        <input type="date"
+                               id="start_date"
+                               name="start_date"
+                               required>
 
                     </div>
 
@@ -127,35 +151,49 @@
                             End Date
                         </label>
 
-                        <input type="date" id="end_date" name="end_date" required>
+                        <input type="date"
+                               id="end_date"
+                               name="end_date"
+                               required>
 
                     </div>
 
                 </div>
 
 
-                <!-- Reason -->
+                <!-- REASON -->
                 <div class="apply-field">
 
                     <label for="reason">
                         Reason for Leave
                     </label>
 
-                    <textarea id="reason" name="reason" rows="5" placeholder="Please enter the reason for your leave..."
-                        required></textarea>
+                    <textarea id="reason"
+                              name="reason"
+                              rows="5"
+                              placeholder="Please enter the reason for your leave..."
+                              required></textarea>
 
                 </div>
 
 
-                <!-- Form Actions -->
+                <!-- FORM ACTIONS -->
                 <div class="apply-actions">
 
-                    <a href="{{ url_for('dashboard') }}" class="apply-cancel-btn">
+                    <!-- DYNAMIC CANCEL BUTTON -->
+                    <a href="{{ url_for('manager_dashboard') if session.get('role') == 'manager' else url_for('dashboard') }}"
+                       class="apply-cancel-btn">
+
                         Cancel
+
                     </a>
 
+
+                    <!-- SUBMIT BUTTON -->
                     <button type="submit" class="apply-submit-btn">
+
                         Submit Application
+
                     </button>
 
                 </div>
@@ -167,9 +205,11 @@
     </main>
 
 
-    <!-- Footer -->
+    <!-- FOOTER -->
     <footer class="apply-footer">
+
         <p>LeaveFlow &copy; 2026</p>
+
     </footer>
 
 </body>

@@ -8,7 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 
 app.config["SECRET_KEY"] = os.environ.get(
-    "SECRETY_KEY", "dev-only"
+    "SECRET_KEY", "dev-only"
 )
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///leave_db.db"
@@ -23,6 +23,27 @@ def login_required(view):
         return view(*args, **kwargs)
     return wrapped_view
 
+
+def role_required(*required_roles):
+
+    def decorator(view_function):
+
+        @wraps(view_function)
+        def wrapper(*args, **kwargs):
+
+            if "user_id" not in session:
+                return redirect(url_for("login"))
+
+            if session.get("role") not in required_roles:
+                return "You do not have permission to access this page", 403
+
+            return view_function(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
+
+
 @app.route("/", methods = ["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -36,6 +57,11 @@ def login():
             session["username"] = user.username
             session["role"] = user.role
 
+            print("LOGIN USER: ", user.username)
+            print("LOGIN ROLE: ", user.role)
+            print("SESSION: ",  dict(session))
+
+
             if user.role == "manager":
                 return redirect(url_for("manager_dashboard"))
             else:
@@ -48,13 +74,26 @@ def login():
 
 @app.route("/dashboard")
 @login_required
+@role_required("employee")
 def dashboard():
     employee_id = session["username"]
     leaves = view_leaves(employee_id)
     return render_template("dashboard.html", leaves = leaves)
 
+@app.route("/manager_dashboard")
+@login_required
+@role_required("manager")
+def manager_dashboard():
+    employee_id = int(session["username"])
+    leaves = view_leaves(employee_id)
+    return render_template(
+        "manager_dashboard.html",
+        leaves=leaves
+    )
+
 @app.route("/apply", methods = ["GET", "POST"])
 @login_required
+@role_required("employee", "manager")
 def apply_leave():
     if request.method == "POST":
         employee_id = int(session["username"])
@@ -87,12 +126,16 @@ def apply_leave():
             end_date,
             reason
         )
-        return redirect(url_for("dashboard"))
-
+        if session.get("role") == "manager":
+            return redirect(url_for("manager_dashboard"))
+        else:
+            return redirect(url_for("dashboard"))
+        
     return render_template("apply_leave.html")
 
 @app.route("/edit/<int:leave_id>", methods=["GET", "POST"])
 @login_required
+@role_required("employee", "manager")
 def edit_leave(leave_id):
 
     leave = get_leave_by_id(leave_id)
@@ -101,7 +144,7 @@ def edit_leave(leave_id):
         return "Leave application not found!", 404
 
     if leave.status != "Pending":
-        return "Only pending leave applications can be deleted!", 403
+        return "Only pending leave applications can be edited!", 403
 
 
     if request.method == "POST":
@@ -136,6 +179,7 @@ def edit_leave(leave_id):
 
 @app.route("/delete/<int:leave_id>", methods = ["POST"])
 @login_required
+@role_required("employee", "manager")
 def delete_leave_record(leave_id):
     
     leave = get_leave_by_id(leave_id)
