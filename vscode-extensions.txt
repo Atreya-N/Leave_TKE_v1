@@ -1,0 +1,7 @@
+ms-python.debugpy
+ms-python.python
+ms-python.vscode-pylance
+ms-python.vscode-python-envs
+pkief.material-icon-theme
+qwtel.sqlite-viewer
+thedavej.night-owl-black

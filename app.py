@@ -202,4 +202,7 @@ with app.app_context():
     db.create_all()
 
 if __name__ == "__main__":
-    app.run(debug = True)
+    # Local development only. In production the app is served by gunicorn
+    # (see DEPLOYMENT.md), which never runs this block.
+    # Enable the debugger with: FLASK_DEBUG=1 python app.py
+    app.run(debug=os.environ.get("FLASK_DEBUG") == "1")
