@@ -19,9 +19,11 @@ def login_required(view):
     @wraps(view)
     def wrapped_view(*args, **kwargs):
         if "user_id" not in session:
+            print("Inside login")
+            flash("Please login to continue", "error")
             return redirect(url_for("login"))
         return view(*args, **kwargs)
-    return wrapped_view
+    return wrapped_viewz
 
 
 def role_required(*required_roles):
@@ -32,6 +34,8 @@ def role_required(*required_roles):
         def wrapper(*args, **kwargs):
 
             if "user_id" not in session:
+                print("Inside roll")
+                flash("Please login to continue", "error")
                 return redirect(url_for("login"))
 
             if session.get("role") not in required_roles:
@@ -157,7 +161,7 @@ def edit_leave(leave_id):
             start_date = date.fromisoformat(start_date_str)
             end_date = date.fromisoformat(end_date_str)
 
-        except (TypeError, ValueError):
+        except (TypeError, ValueError): 
             return "Invalid date format!", 400
 
         if not all([leave_type, start_date_str, end_date_str, reason]):
