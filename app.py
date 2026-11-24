@@ -23,7 +23,7 @@ def login_required(view):
             flash("Please login to continue", "error")
             return redirect(url_for("login"))
         return view(*args, **kwargs)
-    return wrapped_viewz
+    return wrapped_view
 
 
 def role_required(*required_roles):
@@ -130,7 +130,7 @@ def apply_leave():
             end_date,
             reason
         )
-        if session.get("role") == "manager":
+        if session["role"] == "manager":
             return redirect(url_for("manager_dashboard"))
         else:
             return redirect(url_for("dashboard"))
@@ -178,7 +178,10 @@ def edit_leave(leave_id):
             reason
         )
 
-        return redirect(url_for("dashboard"))
+        if session["role"] == "employee":
+            return redirect(url_for("dashboard"))
+        else:
+            return redirect(url_for("manager_dashboard"))
     return render_template("edit_leave.html", leave=leave)
 
 @app.route("/delete/<int:leave_id>", methods = ["POST"])
@@ -195,8 +198,11 @@ def delete_leave_record(leave_id):
         return "Only pending leave applications can be deleted!", 403
 
     delete_leave(leave)
-
-    return redirect(url_for("dashboard"))
+    
+    if session["role"] == "employee":
+        return redirect(url_for("dashboard"))
+    else:
+        return redirect(url_for("manager_dashboard"))
 
 @app.route("/logout")
 def logout():
@@ -206,7 +212,4 @@ with app.app_context():
     db.create_all()
 
 if __name__ == "__main__":
-    # Local development only. In production the app is served by gunicorn
-    # (see DEPLOYMENT.md), which never runs this block.
-    # Enable the debugger with: FLASK_DEBUG=1 python app.py
     app.run(debug=os.environ.get("FLASK_DEBUG") == "1")
