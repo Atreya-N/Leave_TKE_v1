@@ -1,4 +1,3 @@
-
 from getpass import getpass
 
 from app import app

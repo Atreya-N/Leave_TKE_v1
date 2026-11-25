@@ -2,7 +2,7 @@ import os
 from functools import wraps
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from datetime import date
-from database import db, add_leave, view_leaves, get_leave_by_id, update_leave, delete_leave, User
+from database import db, add_leave, view_leaves, get_leave_by_id, update_leave, delete_leave, User, LeaveRequest
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
@@ -80,7 +80,7 @@ def login():
 @login_required
 @role_required("employee")
 def dashboard():
-    employee_id = session["username"]
+    employee_id = session["user_id"]
     leaves = view_leaves(employee_id)
     return render_template("dashboard.html", leaves = leaves)
 
@@ -88,19 +88,30 @@ def dashboard():
 @login_required
 @role_required("manager")
 def manager_dashboard():
-    employee_id = int(session["username"])
-    leaves = view_leaves(employee_id)
+
+    manager_id = session["user_id"]
+
+    employees = User.query.filter_by(
+        manager_id=manager_id
+    ).all()
+
+    employee_ids = [employee.id for employee in employees]
+
+    team_leaves = LeaveRequest.query.filter(
+        LeaveRequest.employee_id.in_(employee_ids)
+    ).order_by(LeaveRequest.id.desc()).all()
+
     return render_template(
         "manager_dashboard.html",
-        leaves=leaves
+        leaves=team_leaves,
+        employees=employees
     )
-
 @app.route("/apply", methods = ["GET", "POST"])
 @login_required
 @role_required("employee", "manager")
 def apply_leave():
     if request.method == "POST":
-        employee_id = int(session["username"])
+        employee_id = session["user_id"]
         leave_type = request.form.get("leave_type")
         start_date = request.form.get("start_date")
         end_date = request.form.get("end_date")
@@ -110,7 +121,6 @@ def apply_leave():
             return "All fields are required ", 400
 
         try:
-            employee_id = int(employee_id)
             start_date = date.fromisoformat(start_date)
             end_date = date.fromisoformat(end_date)
         

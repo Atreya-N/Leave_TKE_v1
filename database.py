@@ -6,7 +6,11 @@ class LeaveRequest(db.Model):
     __tablename__ = "Leave_Requests"
 
     id = db.Column(db.Integer, primary_key = True)
-    employee_id = db.Column(db.Integer, nullable = False)
+    employee_id = db.Column(
+        db.Integer,
+        db.ForeignKey("Users.id"),
+        nullable=False
+    )
     leave_type = db.Column(db.String(50), nullable = False)
     start_date = db.Column(db.Date, nullable = False)
     end_date = db.Column(db.Date, nullable = False)
@@ -62,4 +66,8 @@ class User(db.Model):
     username =  db.Column(db.String(80), unique = True, nullable = False)
     password_hash = db.Column(db.String(255), nullable = False)
     role = db.Column(db.String(20), nullable = False, default = "employee")
-    
+    manager_id = db.Column(
+        db.Integer,
+        db.ForeignKey("Users.id"),
+        nullable=True
+    )
