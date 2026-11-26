@@ -54,6 +54,13 @@ def update_leave(leave, leave_type, start_date, end_date, reason):
     leave.reason = reason
 
     db.session.commit()
+    
+def process_leave(leave, status, manager_remarks):
+
+    leave.status = status
+    leave.manager_remarks = manager_remarks
+
+    db.session.commit()
 
 def delete_leave(leave):
     db.session.delete(leave)

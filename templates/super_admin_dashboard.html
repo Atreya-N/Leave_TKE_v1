@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin Dashboard | LeaveFlow</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='super_admin_dashboard_style.css') }}">
+</head>
+
+<body>
+    <div class="dashboard-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="sidebar-logo">
+                <div class="sidebar-logo-icon">L</div>
+                <span>LEAVEFLOW</span>
+            </div>
+
+            <div class="sidebar-label">MAIN MENU</div>
+
+            <nav class="sidebar-menu">
+
+                <a href="#overview" class="sidebar-link active">
+                    <span class="sidebar-icon">▦</span>
+                    <span>Overview</span>
+                </a>
+
+                <a href="#users" class="sidebar-link">
+                    <span class="sidebar-icon">♙</span>
+                    <span>User Management</span>
+                </a>
+
+                <a href="#leave-activity" class="sidebar-link">
+                    <span class="sidebar-icon">▤</span>
+                    <span>Leave Activity</span>
+                </a>
+
+                <a href="#assignments" class="sidebar-link">
+                    <span class="sidebar-icon">⇄</span>
+                    <span>Manager Assignments</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+
+                <div class="sidebar-user">
+                    <div class="sidebar-user-avatar">S</div>
+
+                    <div class="sidebar-user-info">
+                        <strong>{{ session.get("username", "Super Admin") }}</strong>
+                        <span>Super Administrator</span>
+                    </div>
+                </div>
+
+                <a href="{{ url_for('logout') }}" class="sidebar-logout">
+                    ↪ &nbsp; Logout
+                </a>
+
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+
+            <header class="top-navbar">
+                <div class="navbar-title">Administration Portal</div>
+
+                <div class="navbar-right">
+                    <span class="admin-badge">SUPER ADMIN</span>
+                </div>
+            </header>
+
+
+            <div class="dashboard-container">
+
+                <!-- FLASH MESSAGES -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                {% for category, message in messages %}
+                <div class="flash-message {{ category }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+
+
+                <!-- OVERVIEW -->
+                <section class="dashboard-section" id="overview">
+
+                    <div class="welcome-section">
+                        <h1>Welcome, {{ session.get("username", "Super Admin") }}</h1>
+                        <p>Monitor organisation activity and manage the LeaveFlow system.</p>
+                    </div>
+
+                    <div class="stats-grid">
+
+                        <div class="stat-card">
+                            <div class="stat-card-label">TOTAL EMPLOYEES</div>
+                            <div class="stat-card-value">
+                                {{ users | selectattr("role", "equalto", "employee") | list | length }}
+                            </div>
+                            <div class="stat-card-description">Registered employees</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-card-label">TOTAL MANAGERS</div>
+                            <div class="stat-card-value">
+                                {{ users | selectattr("role", "equalto", "manager") | list | length }}
+                            </div>
+                            <div class="stat-card-description">Registered managers</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-card-label">TOTAL ADMINS</div>
+                            <div class="stat-card-value">
+                                {{ users | selectattr("role", "equalto", "admin") | list | length }}
+                            </div>
+                            <div class="stat-card-description">Administrator accounts</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-card-label">TOTAL LEAVE REQUESTS</div>
+                            <div class="stat-card-value">{{ leaves | length }}</div>
+                            <div class="stat-card-description">Organisation-wide applications</div>
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- USER MANAGEMENT -->
+                <section class="dashboard-section" id="users">
+
+                    <div class="section-heading">
+                        <div>
+                            <h2>User Management</h2>
+                            <p>Create and view registered users and their roles.</p>
+                        </div>
+                    </div>
+
+
+                    <!-- CREATE USER FORM -->
+                    <div class="dashboard-card create-user-card">
+
+                        <h3>Create New User</h3>
+
+                        <p class="form-description">
+                            Register a new employee, manager, admin or super admin.
+                        </p>
+
+                        <form action="{{ url_for('create_user') }}" method="POST">
+
+                            <div class="form-grid">
+
+                                <div class="form-group">
+                                    <label for="username">Username / Employee Number</label>
+
+                                    <input type="text" id="username" name="username" placeholder="Enter username"
+                                        required>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+
+                                    <input type="password" id="password" name="password" placeholder="Enter password"
+                                        required>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="role">User Role</label>
+
+                                    <select id="role" name="role" required>
+
+                                        <option value="">Select a role</option>
+
+                                        <option value="employee">Employee</option>
+                                        <option value="manager">Manager</option>
+                                        <option value="admin">Admin</option>
+                                        <option value="super_admin">Super Admin</option>
+
+                                    </select>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="manager_id">Assign Manager</label>
+
+                                    <select id="manager_id" name="manager_id">
+
+                                        <option value="">No manager assigned</option>
+
+                                        {% for user in users if user.role == "manager" %}
+                                        <option value="{{ user.id }}">
+                                            {{ user.username }}
+                                        </option>
+                                        {% endfor %}
+
+                                    </select>
+
+                                    <small>
+                                        This assignment applies only to employee accounts.
+                                    </small>
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-actions">
+                                <button type="submit" class="primary-button">
+                                    + Create User
+                                </button>
+                            </div>
+
+                        </form>
+
+                    </div>
+
+
+                    <!-- EXISTING USERS TABLE -->
+                    <div class="dashboard-card">
+
+                        <div class="table-wrapper">
+
+                            <table class="dashboard-table">
+
+                                <thead>
+                                    <tr>
+                                        <th>USER ID</th>
+                                        <th>USERNAME</th>
+                                        <th>ROLE</th>
+                                        <th>ASSIGNED MANAGER</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    {% for user in users %}
+
+                                    <tr>
+
+                                        <td>#{{ user.id }}</td>
+
+                                        <td>{{ user.username }}</td>
+
+                                        <td>
+
+                                            {% if user.role == "super_admin" %}
+                                            <span class="role-badge role-super-admin">
+                                                SUPER ADMIN
+                                            </span>
+
+                                            {% elif user.role == "admin" %}
+                                            <span class="role-badge role-admin">
+                                                ADMIN
+                                            </span>
+
+                                            {% elif user.role == "manager" %}
+                                            <span class="role-badge role-manager">
+                                                MANAGER
+                                            </span>
+
+                                            {% else %}
+                                            <span class="role-badge role-employee">
+                                                EMPLOYEE
+                                            </span>
+                                            {% endif %}
+
+                                        </td>
+
+                                        <td>
+
+                                            {% if user.role == "employee" and user.manager_id %}
+
+                                            {% set manager = users | selectattr("id", "equalto", user.manager_id) |
+                                            first %}
+
+                                            {% if manager %}
+                                            {{ manager.username }}
+                                            {% else %}
+                                            <span class="no-manager">Manager not found</span>
+                                            {% endif %}
+
+                                            {% elif user.role == "employee" %}
+
+                                            <span class="no-manager">Not assigned</span>
+
+                                            {% else %}
+                                            —
+                                            {% endif %}
+
+                                        </td>
+
+                                    </tr>
+
+                                    {% else %}
+
+                                    <tr>
+                                        <td colspan="4" class="empty-table">
+                                            No users registered.
+                                        </td>
+                                    </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- LEAVE ACTIVITY -->
+                <section class="dashboard-section" id="leave-activity">
+
+                    <div class="section-heading">
+                        <div>
+                            <h2>Leave Activity</h2>
+                            <p>Organisation-wide leave applications and decisions.</p>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+
+                        <div class="table-wrapper">
+
+                            <table class="dashboard-table">
+
+                                <thead>
+                                    <tr>
+                                        <th>REQUEST ID</th>
+                                        <th>EMPLOYEE</th>
+                                        <th>LEAVE TYPE</th>
+                                        <th>START DATE</th>
+                                        <th>END DATE</th>
+                                        <th>STATUS</th>
+                                        <th>MANAGER REMARKS</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    {% for leave in leaves %}
+
+                                    <tr>
+
+                                        <td>#{{ leave.id }}</td>
+
+                                        <td>
+
+                                            {% set employee = users | selectattr("id", "equalto", leave.employee_id) |
+                                            first %}
+
+                                            {% if employee %}
+                                            {{ employee.username }}
+                                            {% else %}
+                                            Unknown user
+                                            {% endif %}
+
+                                        </td>
+
+                                        <td>{{ leave.leave_type }}</td>
+
+                                        <td>{{ leave.start_date.strftime("%d-%m-%Y") }}</td>
+
+                                        <td>{{ leave.end_date.strftime("%d-%m-%Y") }}</td>
+
+                                        <td>
+
+                                            {% if leave.status == "Pending" %}
+                                            <span class="status-badge status-pending">
+                                                PENDING
+                                            </span>
+
+                                            {% elif leave.status == "Approved" %}
+                                            <span class="status-badge status-approved">
+                                                APPROVED
+                                            </span>
+
+                                            {% elif leave.status == "Rejected" %}
+                                            <span class="status-badge status-rejected">
+                                                REJECTED
+                                            </span>
+
+                                            {% else %}
+                                            {{ leave.status }}
+                                            {% endif %}
+
+                                        </td>
+
+                                        <td>{{ leave.manager_remarks or "—" }}</td>
+
+                                    </tr>
+
+                                    {% else %}
+
+                                    <tr>
+                                        <td colspan="7" class="empty-table">
+                                            No leave applications found.
+                                        </td>
+                                    </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- MANAGER ASSIGNMENTS -->
+                <section class="dashboard-section" id="assignments">
+
+                    <div class="section-heading">
+                        <div>
+                            <h2>Manager Assignments</h2>
+                            <p>View employee-to-manager relationships.</p>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+
+                        <div class="table-wrapper">
+
+                            <table class="dashboard-table">
+
+                                <thead>
+                                    <tr>
+                                        <th>EMPLOYEE ID</th>
+                                        <th>EMPLOYEE USERNAME</th>
+                                        <th>MANAGER ID</th>
+                                        <th>MANAGER USERNAME</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    {% for user in users if user.role == "employee" %}
+
+                                    <tr>
+
+                                        <td>#{{ user.id }}</td>
+
+                                        <td>{{ user.username }}</td>
+
+                                        <td>
+
+                                            {% if user.manager_id %}
+                                            #{{ user.manager_id }}
+                                            {% else %}
+                                            —
+                                            {% endif %}
+
+                                        </td>
+
+                                        <td>
+
+                                            {% if user.manager_id %}
+
+                                            {% set manager = users | selectattr("id", "equalto", user.manager_id) |
+                                            first %}
+
+                                            {% if manager %}
+                                            {{ manager.username }}
+                                            {% else %}
+                                            Manager not found
+                                            {% endif %}
+
+                                            {% else %}
+                                            Not assigned
+                                            {% endif %}
+
+                                        </td>
+
+                                    </tr>
+
+                                    {% else %}
+
+                                    <tr>
+                                        <td colspan="4" class="empty-table">
+                                            No employees registered.
+                                        </td>
+                                    </tr>
+
+                                    {% endfor %}
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+            <footer class="dashboard-footer">
+                © 2026 LeaveFlow. All rights reserved.
+            </footer>
+
+        </main>
+
+    </div>
+</body>
+
+</html>
