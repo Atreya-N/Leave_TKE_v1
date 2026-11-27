@@ -12,3 +12,4 @@ venv/
 # Local database (contains real user data and password hashes)
 instance/
 
+Docker Images/
